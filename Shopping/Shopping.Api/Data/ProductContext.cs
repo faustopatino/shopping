@@ -1,11 +1,31 @@
-﻿using Shopping.Api.Models;
+﻿using MongoDB.Driver;
+using Shopping.Api.Models;
 
 namespace Shopping.Api.Data
 {
-    public static class ProductContext
+    public class ProductContext
     {
-        public static readonly List<Product> Products = new List<Product>
+        public ProductContext(IConfiguration configuration)
         {
+            var client = new MongoClient(configuration["DatabaseSettings:ConnectionString"]);
+            var database = client.GetDatabase(configuration["DatabaseSettings:DatabaseName"]);
+            Products = database.GetCollection<Product>(configuration["DatabaseSettings:CollectionName"]);
+            SeedData(Products);
+        }
+        public IMongoCollection<Product> Products { get; }
+
+        private static void SeedData(IMongoCollection<Product> productCollection)
+        {
+            var exist = productCollection.Find(p => true).Any();
+            if (!exist)
+            {
+                productCollection.InsertManyAsync(GetPreconfiguredProducts());
+            }
+        }
+
+        private static IEnumerable<Product> GetPreconfiguredProducts()
+        {
+            return new List<Product> {
             new Product()
                 {
                     Name = "IPhone X",
@@ -54,6 +74,7 @@ namespace Shopping.Api.Data
                     Price = 240.00M,
                     Category = "Home Kitchen"
                 }
-        };
+            };
+        }
     }
 }
