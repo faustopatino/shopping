@@ -17,12 +17,12 @@ resources:
 variables:
 
   # Container registry service connection established during pipeline creation
-  dockerRegistryServiceConnection: '81291f75-b653-4363-8533-3653d26c1570'
-  imageRepository: 'shoppingapi'
+  dockerRegistryServiceConnection: '9a94a16a-c79c-437e-b0f0-eee0cd0d48fb'
+  imageRepository: 'faustopatinoshopping'
   containerRegistry: 'shoppingfaustoacr.azurecr.io'
   dockerfilePath: '**/Dockerfile'
   tag: '$(Build.BuildId)'
-  imagePullSecret: 'shoppingfaustoacr84799771-auth'
+  imagePullSecret: 'shoppingfaustoacr783775b9-auth'
 
   # Agent VM image name
   vmImageName: 'ubuntu-latest'
@@ -44,7 +44,6 @@ stages:
         repository: $(imageRepository)
         dockerfile: $(dockerfilePath)
         containerRegistry: $(dockerRegistryServiceConnection)
-        buildContext: $(Build.SourcesDirectory)/Shopping
         tags: |
           $(tag)
 
