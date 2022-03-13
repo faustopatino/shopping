@@ -1,0 +1,19 @@
+apiVersion : apps/v1
+kind: Deployment
+metadata:
+  name: faustopatinoshopping 
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: faustopatinoshopping
+  template:
+    metadata:
+      labels:
+        app: faustopatinoshopping 
+    spec:
+      containers:
+        - name: faustopatinoshopping 
+          image: shoppingfaustoacr.azurecr.io/faustopatinoshopping
+          ports:
+          - containerPort: 80
